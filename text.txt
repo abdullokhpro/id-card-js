@@ -1,0 +1,95 @@
+let USERS =
+  JSON.parse(localStorage.getItem("users")) ||
+  [
+    // {
+    //   fname: "abdullox",
+    //   lname: "rasulov",
+    //   profession: "studentt",
+    //   address: "Tashkent",
+    // },
+  ];
+
+const addBtn = document.querySelector(".hero__main__btn");
+const cancelBtn = document.querySelector(".hero__modal__cancel");
+const modal = document.querySelector(".hero__modal");
+const cardGeneral = document.querySelector(".hero__cards");
+const fname = document.querySelector("#fname");
+const lname = document.querySelector("#lname");
+const work = document.querySelector("#work");
+const address = document.querySelector("#address");
+const select = document.querySelector(".hero__modal__select");
+
+addBtn.addEventListener("click", () => {
+  function showModel() {
+    modal.classList.add("hero__modal__show");
+  }
+
+  showModel();
+});
+
+cancelBtn.addEventListener("click", () => {
+  function showModel() {
+    modal.classList.remove("hero__modal__show");
+  }
+
+  showModel();
+});
+
+class User {
+  constructor(fname, lname, profession, address) {
+    this.fname = fname;
+    this.lname = lname;
+    this.profession = profession;
+    this.address = address;
+  }
+}
+
+modal.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+
+  let fnameValue = fname.value;
+  let lnameValue = lname.value;
+  let workValue = select.value;
+  let addressValue = address.value;
+
+  let userDate = new User(fnameValue, lnameValue, workValue, addressValue);
+  USERS.push(userDate);
+  localStorage.setItem("users", JSON.stringify(USERS));
+  CreateCardData(USERS);
+});
+
+function CreateCardData(data) {
+  while (cardGeneral.firstChild) {
+    cardGeneral.firstChild.remove();
+  }
+
+  let card = "";
+  data.forEach((element) => {
+    card += `
+          <div class="hero__card">
+              <h2 class="hero__card__title">${element.profession}</h2>
+              <span class="hero__card__line"></span>
+              <h3 class="hero__card__subtitle">IDENTITIY CARD</h3>
+
+              <div class="hero__card__bottom">
+                <div class="hero__card__content">
+                  <p class="hero__card__text">Studies/works at</p>
+                  <h4 class="hero__card__headings">${element.profession}</h4>
+
+                  <p class="hero__card__text">Full name</p>
+                  <h4 class="hero__card__headings">${
+                    element.fname + " " + element.lname
+                  }</h4>
+
+                  <p class="hero__card__text">Address</p>
+                  <h4 class="hero__card__headings">${element.address}</h4>
+                </div>
+                <img src="https://placehold.co/180x200" alt="" />
+              </div>
+            </div>
+    `;
+  });
+  cardGeneral.innerHTML = card;
+}
+
+CreateCardData(USERS);

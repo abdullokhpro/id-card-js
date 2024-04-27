@@ -7,6 +7,12 @@ body {
   align-items: center;
   height: 100vh;
 
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+  }
+
   &__main {
     display: flex;
     flex-direction: column;
